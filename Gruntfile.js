@@ -32,10 +32,10 @@ module.exports = function(grunt) {
     files_check: {
       test: {
         options: {
-          excluded: ['test/fixtures/multiple-error'],
+          excluded: ['test/fixtures/multile-error', 'test/fixtures/one-error'],
           pattern: /[0-9]/
         },
-        src: ['test/fixtures/no-error', 'test/fixtures/multiple-error']
+        src: ['test/fixtures/*']
       }
     },
 
