@@ -18,10 +18,24 @@ module.exports = function(grunt) {
       pattern: /^$/
     });
 
-
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
-      
+
+      // Filtering of the files described in the `src` option by 
+      // removing those specified in the `excluded` option and those
+      // which do not exist.
+      var files = f.src.filter(function(filepath) {
+        if (!grunt.file.exists(filepath)) {
+          return false;
+        }
+        else if (inArray(filepath, options.excluded)) {
+          return false;
+        }
+        else {
+          return true;
+        }
+      });
+
     });
 
     return true;
