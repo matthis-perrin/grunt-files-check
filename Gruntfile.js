@@ -30,22 +30,13 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     files_check: {
-      default_options: {
+      test: {
         options: {
+          excluded: ['test/fixtures/multiple-error'],
+          pattern: /[0-9]/
         },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
+        src: ['test/fixtures/no-error', 'test/fixtures/multiple-error']
+      }
     },
 
     // Unit tests.
