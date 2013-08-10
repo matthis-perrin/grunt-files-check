@@ -132,3 +132,5 @@ module.exports = function(grunt) {
   }
 
 };
+
+return exports;

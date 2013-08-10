@@ -30,13 +30,50 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     files_check: {
-      test: {
+
+      basic: {
         options: {
-          excluded: ['test/fixtures/multile-error', 'test/fixtures/one-error'],
           pattern: /[0-9]/
         },
         src: ['test/fixtures/*']
+      },
+
+      basicOneError: {
+        options: {
+          pattern: /[0-9]/
+        },
+        src: ['test/fixtures/one-error']
+      },
+
+      excluded: {
+        options: {
+          excluded: ['test/fixtures/multiple-error'],
+          pattern: /[0-9]/
+        },
+        src: ['test/fixtures/*']
+      },
+
+      verbose: {
+        options: {
+          pattern: /[0-9]/,
+          verbose: true
+        },
+        src: ['test/fixtures/*']
+      },
+
+      withoutParams: {
+        options: {
+        },
+        src: ['test/fixtures/*']
+      },
+
+      success: {
+        options: {
+          pattern: /[0-9]/
+        },
+        src: ['test/fixtures/no-error']
       }
+
     },
 
     // Unit tests.
@@ -56,7 +93,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'files_check', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);
