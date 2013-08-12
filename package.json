@@ -1,7 +1,7 @@
 {
   "name": "grunt-files-check",
   "description": "Grunt plugin to apply regular expressions on files and check their validity.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/matthis-perrin/grunt-files-check",
   "author": "Matthis Perrin <matthis.perrin@gmail.com>",
   "repository": {
