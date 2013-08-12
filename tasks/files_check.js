@@ -80,7 +80,7 @@ module.exports = function(grunt) {
             incorrect++;
 
             // Displaying the error in the console
-            var fileNameFormatted = fileName + ':' + j;
+            var fileNameFormatted = fileName + ':' + (j + 1);
             fileNameFormatted += new Array(maxSize - fileNameFormatted.length + 1).join(" "); // Append remaining spaces
             grunt.log.error(fileNameFormatted + '   found \'' + matchResult[0] + '\' in the line \'' + matchResult.input + '\'');
 
