@@ -25,11 +25,11 @@ In your project's Gruntfile, add a section named `files_check` to the data objec
 ```js
 grunt.initConfig({
   files_check: {
-    options: {
-      // Task-specific options go here.
-    },
     your_target: {
-      // Target-specific file lists and/or options go here.
+      options: {
+        pattern: /* your regex */
+      },
+      src: /* the files that will be checked */
     },
   },
 })
@@ -37,46 +37,38 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.pattern
 Type: `String`
-Default value: `',  '`
+Default value: `/^$/`
 
-A string value that is used to do something with whatever.
+The regex that will by applied on every file.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+#### options.excluded
+Type: `Array`
+Default value: `[]`
 
-A string value that is used to do something else with whatever else.
+An array which contains the files that will not be checked
+
+#### options.verbose
+Type: `Array`
+Default value: `false`
+
+When set to `true` the task will display the files that have been checked.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+#### Check for `console.log`
+In this example, we check every js files in the `app/scripts` folder to ensure that there no `console.log` anymore. We exclude the `app/scripts/debug` which contains files we do not want to check.
 
 ```js
 grunt.initConfig({
   files_check: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  files_check: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+    your_target: {
+      options: {
+        excluded: ['app/scripts/debug/**/*.js']
+        pattern: /console\.log/
+      },
+      src: 'app/scripts/**/*.js'
     },
   },
 })
@@ -84,6 +76,3 @@ grunt.initConfig({
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-## Release History
-_(Nothing yet)_

@@ -3,10 +3,7 @@
   "description": "Grunt plugin to apply regular expressions on files and check their validity.",
   "version": "0.1.0",
   "homepage": "https://github.com/matthis-perrin/grunt-files-check",
-  "author": {
-    "name": "Matthis Perrin",
-    "email": "matthis.perrin@gmail.com"
-  },
+  "author": "Matthis Perrin <matthis.perrin@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git@github.com:matthis-perrin/grunt-files-check.git"
@@ -41,5 +38,11 @@
   },
   "keywords": [
     "gruntplugin"
-  ]
+  ],
+  "readmeFilename": "README.md",
+  "gitHead": "abbde7c5b002c9c02ba776a03c752925a0e8bcc2",
+  "directories": {
+    "test": "test"
+  },
+  "license": "BSD"
 }
