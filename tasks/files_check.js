@@ -18,7 +18,8 @@ module.exports = function(grunt) {
     var options = this.options({
       excluded: [],
       pattern: /^$/,
-      verbose: false
+      verbose: false,
+      maxFileNameWidth: 40
     });
 
     // Iterate over all specified file groups.
@@ -26,9 +27,12 @@ module.exports = function(grunt) {
 
       // Filtering of the files described in the `src` option by 
       // removing those specified in the `excluded` option and those
-      // which do not exist.
+      // which are directories.
       var files = f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
+          return false;
+        }
+        else if (grunt.file.isDir(filepath)) {
           return false;
         }
         else if (inArray(filepath, options.excluded)) {
@@ -60,6 +64,7 @@ module.exports = function(grunt) {
 
         // Get the content of the file
         var fileName = files[i];
+        var formattedFileName;
         var fileContent = grunt.file.read(fileName);
 
         // Extract each line of the file
@@ -80,17 +85,17 @@ module.exports = function(grunt) {
             incorrect++;
 
             // Displaying the error in the console
-            var fileNameFormatted = fileName + ':' + (j + 1);
-            fileNameFormatted += new Array(maxSize - fileNameFormatted.length + 1).join(" "); // Append remaining spaces
-            grunt.log.error(fileNameFormatted + '   found \'' + matchResult[0] + '\' in the line \'' + matchResult.input.trim() + '\'');
+            var fileNameWithLineNumber = fileName + ':' + (j + 1);
+            formattedFileName = formatFileName(fileNameWithLineNumber, options.maxFileNameWidth);
+            grunt.log.error(formattedFileName + '   found \'' + matchResult[0] + '\' in the line \'' + matchResult.input.trim() + '\'');
 
           }
         }
 
         // If the file is correct, we display a message in the console (only in verbose mode)
         if (fileCorrect && options.verbose) {
-          fileName += new Array(maxSize - fileName.length + 1).join(" "); // Append remaining spaces
-          grunt.log.ok(fileName + '   OK'.green);
+          formattedFileName = formatFileName(fileName, options.maxFileNameWidth);
+          grunt.log.ok(formattedFileName + '   OK'.green);
         }
 
       }
@@ -110,12 +115,71 @@ module.exports = function(grunt) {
 
 
 
+  // ----------------------------------------------------------------
+  // Return a formatted verison of the `fileName` string to make it
+  // fit perfectly in the `maxSize` width. This format in a "smart"
+  // way. It try first to display the file basename, then try to
+  // display the first folder of the path, then try to display every
+  // folder (starting by the end).
+  // ----------------------------------------------------------------
+  function formatFileName (fileName, maxSize) {
+
+    // If not larger than the max size, no need to trim
+    if (fileName.length <= maxSize) {
+      fileName += new Array(maxSize - fileName.length + 1).join(" "); // Append remaining spaces
+      return fileName;
+    }
+
+
+    // Otherwise we need to trim the fileName
+    var fileNameParts = fileName.split('/');
+    var firstPart = fileNameParts[0];
+    var lastPart = fileNameParts[fileNameParts.length - 1]; // base name
+
+
+    // If even the file basename (with ellipsis) is larger than the maxSize, we trim it
+    if (lastPart.length + 3 > maxSize) {
+      return '...' + lastPart.substring(lastPart.length - maxSize + 3, lastPart.length);
+    }
+
+
+    // If the first part and the last part are larger than the maxSize, we
+    // just put the last part with ellipsis
+    if (firstPart.length + lastPart.length + 5 > maxSize) { // The '+5' is for the '/.../' string between the first and the last part
+      return '...' + lastPart.substring(lastPart.length - maxSize + 3, lastPart.length);
+    }
+
+
+    // If we have enough space to put the first part and the last part
+    // we display the first part, the last part and as much other parts
+    // as possible (starting by the end).
+    var croppedFileNameStart = firstPart + '/...';
+    var croppedFileNameEnd = '';
+    var i = fileNameParts.length - 1;
+    while (true) {
+      var nextPart = fileNameParts[i--];
+      if (croppedFileNameEnd.length + nextPart.length + 1 <= maxSize - croppedFileNameStart.length) { // The +1 is for the '/' we append
+        croppedFileNameEnd = '/' + nextPart + croppedFileNameEnd;
+      }
+      else {
+        break;
+      }
+    }
+
+    // We return this cropped version
+    fileName = croppedFileNameStart + croppedFileNameEnd;
+    fileName += new Array(maxSize - fileName.length + 1).join(" "); // Append remaining spaces
+    return fileName;
+
+  }
+
+
 
   // ----------------------------------------
   // Return true if `value` is present in the
   // array `array`
   // ----------------------------------------
-  function inArray(value, array) {
+  function inArray (value, array) {
 
     if (typeof array === 'undefined') {
       return false;

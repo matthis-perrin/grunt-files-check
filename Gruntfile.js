@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         options: {
           pattern: /[0-9]/
         },
-        src: ['test/fixtures/*']
+        src: ['test/fixtures/**/*']
       },
 
       basicOneError: {
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
           excluded: ['test/fixtures/multiple-error'],
           pattern: /[0-9]/
         },
-        src: ['test/fixtures/*']
+        src: ['test/fixtures/**/*']
       },
 
       verbose: {
@@ -58,13 +58,13 @@ module.exports = function(grunt) {
           pattern: /[0-9]/,
           verbose: true
         },
-        src: ['test/fixtures/*']
+        src: ['test/fixtures/**/*']
       },
 
       withoutParams: {
         options: {
         },
-        src: ['test/fixtures/*']
+        src: ['test/fixtures/**/*']
       },
 
       success: {
@@ -96,6 +96,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['clean', 'nodeunit']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('default', ['jshint', 'files_check']);
 
 };
