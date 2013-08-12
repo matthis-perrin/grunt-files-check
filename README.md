@@ -62,13 +62,13 @@ In this example, we check every js files in the `app/scripts` folder to ensure t
 
 ```js
 grunt.initConfig({
-  files_check: {
+  console_log: {
     your_target: {
       options: {
         excluded: ['app/scripts/debug/**/*.js']
         pattern: /console\.log/
       },
-      src: 'app/scripts/**/*.js'
+      src: ['app/scripts/**/*.js']
     },
   },
 })
