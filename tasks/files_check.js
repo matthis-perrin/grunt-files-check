@@ -12,7 +12,7 @@ var colors = require('colors');
 
 module.exports = function(grunt) {
 
-  grunt.registerMultiTask('files_check', 'Your task description goes here.', function() {
+  grunt.registerMultiTask('files_check', 'Grunt plugin to apply regular expressions on files and check their validity.', function() {
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
@@ -102,7 +102,7 @@ module.exports = function(grunt) {
         grunt.fail.warn(message);
       }
       else {
-        grunt.log.ok(files.length + ' file' + (files.length > 1 ? 's' : '') + ' correct');
+        grunt.log.ok(files.length + ' file' + (files.length > 1 ? 's' : '') + ' checked.');
       }
 
     });
