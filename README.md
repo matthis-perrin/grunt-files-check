@@ -55,6 +55,12 @@ Default value: `false`
 
 When set to `true` the task will display the files that have been checked.
 
+#### options.maxFileNameWidth
+Type: `Integer`
+Default value: `40`
+
+Define the max width used to display a file name in the output. When the file is too long, ellipsis -> '...' are written.
+
 ### Usage Examples
 
 #### Check for `console.log`
@@ -65,8 +71,27 @@ grunt.initConfig({
   console_log: {
     your_target: {
       options: {
-        excluded: ['app/scripts/debug/**/*.js']
+        excluded: ['app/scripts/debug/**/*.js'],
         pattern: /console\.log/
+      },
+      src: ['app/scripts/**/*.js']
+    },
+  },
+})
+```
+
+#### Check for `console.log` with output formatting
+Same example as the previous one, except that we are going to format the output. We display the files that have been checked with the option `verbose: true` and we fix the max width used to display files name to 100 characters (large console) with the option `maxFileNameWidth: 100`.
+
+```js
+grunt.initConfig({
+  console_log: {
+    your_target: {
+      options: {
+        excluded: ['app/scripts/debug/**/*.js'],
+        pattern: /console\.log/,
+        verbose: true,
+        maxFileNameWidth: 100
       },
       src: ['app/scripts/**/*.js']
     },
