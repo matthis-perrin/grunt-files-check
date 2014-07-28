@@ -61,6 +61,12 @@ Default value: `40`
 
 Define the max width used to display a file name in the output. When the file is too long, ellipsis -> '...' are written.
 
+#### options.output
+Type: `String`
+Default value: null
+
+Define file name where log content will be saved.
+
 ### Usage Examples
 
 #### Check for `console.log`

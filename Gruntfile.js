@@ -72,8 +72,15 @@ module.exports = function(grunt) {
           pattern: /[0-9]/
         },
         src: ['test/fixtures/no-error']
-      }
+      },
 
+      saveIntoFile: {
+        options: {
+          pattern: /\@todo/,
+          output: 'tmp/todo-notes.txt'
+        },
+        src: ['test/fixtures/multiple-error']
+      }
     },
 
     // Unit tests.
