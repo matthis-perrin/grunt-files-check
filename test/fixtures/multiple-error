@@ -1,10 +1,12 @@
 foo
 bar
 baz3
+@todo: save Earth
 qux
 quux
 corge
 gr4ault
+var g = rootDir; // @todo: move up
 garply
 waldo
 fred

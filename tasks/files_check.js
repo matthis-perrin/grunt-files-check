@@ -19,13 +19,14 @@ module.exports = function(grunt) {
       excluded: [],
       pattern: /^$/,
       verbose: false,
-      maxFileNameWidth: 40
+      maxFileNameWidth: 40,
+      output: null
     });
 
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
 
-      // Filtering of the files described in the `src` option by 
+      // Filtering of the files described in the `src` option by
       // removing those specified in the `excluded` option and those
       // which are directories.
       var files = f.src.filter(function(filepath) {
@@ -59,7 +60,9 @@ module.exports = function(grunt) {
 
 
       // Then we apply the regex on the files
-      var incorrect = 0;
+      var incorrect     = 0,
+          outputContent = '';
+
       for (i = 0; i < files.length; i++) {
 
         // Get the content of the file
@@ -76,7 +79,7 @@ module.exports = function(grunt) {
 
           // Apply the regex on the line
           var matchResult = fileLines[j].match(options.pattern);
-          
+
           // Check if there is a match
           if (matchResult !== null) {
 
@@ -87,23 +90,34 @@ module.exports = function(grunt) {
             // Displaying the error in the console
             var fileNameWithLineNumber = fileName + ':' + (j + 1);
             formattedFileName = formatFileName(fileNameWithLineNumber, options.maxFileNameWidth);
-            grunt.log.error(formattedFileName + '   found \'' + matchResult[0] + '\' in the line \'' + matchResult.input.trim() + '\'');
+
+            if (options.output) {
+              outputContent += formattedFileName + '\n\t' + matchResult.input.trim() + '\n\n';
+            } else {
+              grunt.log.error(formattedFileName + '   found \'' + matchResult[0] + '\' in the line \'' + matchResult.input.trim() + '\'');
+            }
 
           }
         }
 
         // If the file is correct, we display a message in the console (only in verbose mode)
-        if (fileCorrect && options.verbose) {
+        if (fileCorrect && options.verbose && options.output === null) {
           formattedFileName = formatFileName(fileName, options.maxFileNameWidth);
           grunt.log.ok(formattedFileName + '   OK'.green);
         }
 
       }
-      
+
 
       // Display the final message
       if (incorrect > 0) {
         var message = incorrect + ' error' + (incorrect > 1 ? 's' : '') + ' found.';
+
+        // if search task was successful, save log into file
+        if (options.output) {
+          grunt.file.write(options.output, outputContent, 'utf8');
+        }
+
         grunt.fail.warn(message);
       }
       else {
