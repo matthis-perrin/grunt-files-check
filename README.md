@@ -27,7 +27,7 @@ grunt.initConfig({
   files_check: {
     your_target: {
       options: {
-        pattern: /* your regex */
+        patterns: [ /* your regex array */ ]
       },
       src: /* the files that will be checked */
     },
@@ -37,11 +37,12 @@ grunt.initConfig({
 
 ### Options
 
-#### options.pattern
-Type: `String`
-Default value: `/^$/`
+#### options.patterns
+Type: `String[]`
+Default value: `[ '^$' ]`
 
-The regex that will by applied on every file.
+An array of regex strings that will by applied on every file.
+**Note:** Regex string require escaping. Therefore, `\@todo` need to be ```\\@todo``` and similar.
 
 #### options.excluded
 Type: `Array`
@@ -78,7 +79,9 @@ grunt.initConfig({
     your_target: {
       options: {
         excluded: ['app/scripts/debug/**/*.js'],
-        pattern: /console\.log/
+        pattern: [
+          'console\\.log' // there should be no more logs
+        ]
       },
       src: ['app/scripts/**/*.js']
     },
@@ -95,7 +98,9 @@ grunt.initConfig({
     your_target: {
       options: {
         excluded: ['app/scripts/debug/**/*.js'],
-        pattern: /console\.log/,
+        pattern: [
+          'console\\.log'  // there should be no more logs
+        ],
         verbose: true,
         maxFileNameWidth: 100
       },

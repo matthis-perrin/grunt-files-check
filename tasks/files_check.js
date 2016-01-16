@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       excluded: [],
-      pattern: /^$/,
+      patterns: [ '^$' ],
       verbose: false,
       maxFileNameWidth: 40,
       output: null
@@ -57,7 +57,24 @@ module.exports = function(grunt) {
         }
       }
 
+      function checkPattern(pattern) {
+        re = new RegExp(pattern);
+        matchResult = fileLines[j].match(re);
 
+        // Check if there is a match
+        if (matchResult !== null) {
+
+          // Update the tracking variables
+          fileCorrect = false;
+          incorrect++;
+
+          // Displaying the error in the console
+          fileNameWithLineNumber = fileName + ':' + (j + 1);
+          formattedFileName = formatFileName(fileNameWithLineNumber, options.maxFileNameWidth);
+          grunt.log.error(formattedFileName + '   found \'' + matchResult[0] + '\' in the line \'' + matchResult.input.trim() + '\'');
+
+        }
+      }
 
       // Then we apply the regex on the files
       var incorrect     = 0,
@@ -67,7 +84,7 @@ module.exports = function(grunt) {
 
         // Get the content of the file
         var fileName = files[i];
-        var formattedFileName;
+        var formattedFileName, re, matchResult, fileNameWithLineNumber;
         var fileContent = grunt.file.read(fileName);
 
         // Extract each line of the file
@@ -77,27 +94,9 @@ module.exports = function(grunt) {
         var fileCorrect = true;
         for (var j = 0; j < fileLines.length; j++) {
 
-          // Apply the regex on the line
-          var matchResult = fileLines[j].match(options.pattern);
+          // Apply all regex on the line
 
-          // Check if there is a match
-          if (matchResult !== null) {
-
-            // Update the tracking variables
-            fileCorrect = false;
-            incorrect++;
-
-            // Displaying the error in the console
-            var fileNameWithLineNumber = fileName + ':' + (j + 1);
-            formattedFileName = formatFileName(fileNameWithLineNumber, options.maxFileNameWidth);
-
-            if (options.output) {
-              outputContent += formattedFileName + '\n\t' + matchResult.input.trim() + '\n\n';
-            } else {
-              grunt.log.error(formattedFileName + '   found \'' + matchResult[0] + '\' in the line \'' + matchResult.input.trim() + '\'');
-            }
-
-          }
+          options.patterns.forEach(checkPattern);
         }
 
         // If the file is correct, we display a message in the console (only in verbose mode)

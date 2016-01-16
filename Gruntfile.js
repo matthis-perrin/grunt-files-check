@@ -33,14 +33,14 @@ module.exports = function(grunt) {
 
       basic: {
         options: {
-          pattern: /[0-9]/
+          patterns: [ '[0-9]', '\\@todo' ]
         },
         src: ['test/fixtures/**/*']
       },
 
       basicOneError: {
         options: {
-          pattern: /[0-9]/
+          patterns: [ '[0-9]', '\\@todo' ]
         },
         src: ['test/fixtures/one-error']
       },
@@ -48,14 +48,14 @@ module.exports = function(grunt) {
       excluded: {
         options: {
           excluded: ['test/fixtures/multiple-error'],
-          pattern: /[0-9]/
+          patterns: [ '[0-9]', '\\@todo' ]
         },
         src: ['test/fixtures/**/*']
       },
 
       verbose: {
         options: {
-          pattern: /[0-9]/,
+          patterns: [ '[0-9]', '\\@todo' ],
           verbose: true
         },
         src: ['test/fixtures/**/*']
@@ -69,14 +69,14 @@ module.exports = function(grunt) {
 
       success: {
         options: {
-          pattern: /[0-9]/
+          patterns: [ '[0-9]', '\\@todo' ]
         },
         src: ['test/fixtures/no-error']
       },
 
       saveIntoFile: {
         options: {
-          pattern: /\@todo/,
+          patterns: [ '[0-9]', '\\@todo' ],
           output: 'tmp/todo-notes.txt'
         },
         src: ['test/fixtures/multiple-error']
